@@ -101,20 +101,132 @@
         #registerForm {
             display: none;
         }
+        header {
+    position: fixed;   /* Закріплюємо хедер на екрані */
+    top: 0;            /* Залишаємо хедер на самому верху */
+    left: 0;           /* Встановлюємо ліву межу на 0 */
+    width: 100%;       /* Хедер займає всю ширину екрану */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #2C3E50;
+    border-bottom: 1px solid #ddd;
+    z-index: 1000;     /* Встановлюємо високий індекс, щоб хедер був поверх інших елементів */
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo img {
+    width: 50px;
+    height: auto;
+}
+
+.site-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 10px;
+    text-decoration: none;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 2px;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.site-title:hover {
+    transform: scale(1.1);
+    color: #FD7E14;
+}
+
+.catalog-btn {
+    margin-left: 20px;
+    padding: 8px 14px;
+    background-color: #FD7E14;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-family: "Montserrat", sans-serif;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.catalog-btn:hover {
+    transform: scale(1.1);
+    background-color: #e56a11;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.cart-icon img, .profile-icon img {
+    width: 40px;
+    height: auto;
+    margin-left: 20px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.cart-icon:hover img, .profile-icon:hover img {
+    transform: scale(1.2);
+    opacity: 0.7;
+}
+
     </style>
 </head>
 <body>
+    <header>
+        <div style="margin-left: 50px;" class="header-left">
+            <a href="/" class="logo">
+                <img src="/static/images/logo.png" alt="Logo">
+            </a>
+            <a href="/" class="site-title">Cyberyx</a>
+            <a href="{{ url_for('all_products') }}" class="catalog-btn">Товари</a>
+        </div>
+        <div class="header-right">
+            <a href="{{ url_for('reviews') }}" style="margin-right: 30px;" class="cart-icon">
+                <img src="/static/images/reviews.png" alt="Cart">
+            </a>
+            <a href="{{ url_for('cart') }}" style="margin-right: 30px;" class="cart-icon">
+                <img src="/static/images/icon5.png" alt="Cart">
+            </a>
+            <a href="{{ url_for('auth') }}" class="profile-icon">
+                <img src="/static/images/icon6.png" alt="Profile">
+            </a>
+        </div>
+    </header>
 
-    <h1 id="formTitle">Вхід</h1>
+    
+
+    <h1 style="margin-top: 100px;" id="formTitle">Вхід</h1>
 
     <!-- Форма входу / реєстрації -->
     <div class="form-container" id="formContainer">
-        <!-- Форма для входу -->
-        <form id="login-form">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Пароль" required>
-            <button type="submit">Увійти</button>
-        </form>
+<form id="login-form" method="POST" action="/login">
+    <input type="email" name="email" id="email" required placeholder="Email">
+    <input type="password" name="password" id="password" required placeholder="Пароль">
+    <button type="submit">Увійти</button>
+</form>
+
+        
 
         <!-- Форма для реєстрації -->
         <form id="registerForm">
@@ -197,38 +309,38 @@
             }
         };
 
-        // Вхід
         document.getElementById('login-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+    event.preventDefault();  // Зупиняємо стандартну відправку форми
 
-            // Перевірка на admin email і пароль
-            if (email === 'admin@gmail.com' && password === 'qwerty') {
-                window.location.href = '/admin';  // Перенаправлення на сторінку адміністратора
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Перевірка на admin email і пароль
+    if (email === 'admin@gmail.com' && password === 'qwerty') {
+        window.location.href = '/admin';  // Перенаправлення на сторінку адміністратора
+    } else {
+        // Відправка даних на сервер для перевірки
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = '/profile';  // Перенаправлення на сторінку профілю
             } else {
-                // Відправка даних на сервер для перевірки
-                fetch('/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = '/profile';  // Перенаправлення на сторінку профілю
-                    } else {
-                        alert(data.message);  // Повідомлення про помилку
-                    }
-                })
-                .catch(error => {
-                    console.error('Помилка:', error);
-                    alert('Сталася помилка при вході');
-                });
+                alert(data.message);  // Повідомлення про помилку
             }
+        })
+        .catch(error => {
+            console.error('Помилка:', error);
+            alert('Сталася помилка при вході');
         });
+    }
+});
     </script>
 </body>
 </html>

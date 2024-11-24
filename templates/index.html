@@ -335,7 +335,6 @@
             margin: 20px 0;
             position: relative;
         }
-
         .ad-banner {
             display: none;
             width: auto;
@@ -355,6 +354,7 @@
             object-fit: cover;
             display: block;
         }
+ 
     </style>
 </head>
 <body>
@@ -367,6 +367,9 @@
             <a href="{{ url_for('all_products') }}" class="catalog-btn">Товари</a>
         </div>
         <div class="header-right">
+            <a href="{{ url_for('reviews') }}" style="margin-right: 30px;" class="cart-icon">
+                <img src="/static/images/reviews.png" alt="Cart">
+            </a>
             <a href="{{ url_for('cart') }}" style="margin-right: 30px;" class="cart-icon">
                 <img src="/static/images/icon5.png" alt="Cart">
             </a>
@@ -377,16 +380,17 @@
     </header>
 
     <div class="advertisement">
-        <div class="ad-banner" id="ad1">
-            <img src="/static/images/baner1.png" alt="Advertisement 1">
+        <div class="ad-banner">
+            <img src="/static/images/baner1.png" alt="Ad 1">
         </div>
-        <div class="ad-banner" id="ad2">
-            <img src="/static/images/baner2.png" alt="Advertisement 2">
+        <div class="ad-banner">
+            <img src="/static/images/baner2.png" alt="Ad 2">
         </div>
-        <div class="ad-banner" id="ad3">
-            <img src="/static/images/baner3.jpg" alt="Advertisement 3">
+        <div class="ad-banner">
+            <img src="/static/images/baner3.jpg" alt="Ad 3">
         </div>
     </div>
+    
 
     <div class="product-section">
         <h2 class="section-title">Популярні товари</h2>
@@ -454,17 +458,27 @@
 
 
     <script>
-        let currentAd = 0;
+        let currentAdIndex = 0;
         const ads = document.querySelectorAll('.ad-banner');
+        
+        function switchAd() {
+            // Сховати поточний банер
+            ads[currentAdIndex].style.display = 'none';
     
-        function showNextAd() {
-            ads[currentAd].style.display = 'none';
-                currentAd = (currentAd + 1) % ads.length;
-                ads[currentAd].style.display = 'block';
+            // Перемикання на наступний банер
+            currentAdIndex = (currentAdIndex + 1) % ads.length;
+            
+            // Показати наступний банер
+            ads[currentAdIndex].style.display = 'block';
         }
-            setInterval(showNextAd, 5000);
-        showNextAd();
+    
+        // Запустити першу зміну банерів
+        setInterval(switchAd, 2000);
+    
+        // Ініціалізувати показ першого банера
+        switchAd();
     </script>
+    
     
 </body>
 </html>

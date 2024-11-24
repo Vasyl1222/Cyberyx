@@ -3,75 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Особистий кабінет</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 2.5em;
-            color: #2c3e50;
-        }
-
-        p {
-            font-size: 1.2em;
-            text-align: center;
-            color: #555;
-        }
-
-        .user-details {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .user-details h2 {
-            text-align: center;
-            color: #34495e;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-        }
-
-        .user-details p {
-            font-size: 1.1em;
-            line-height: 1.8;
-        }
-
-        .user-details .info {
-            margin-bottom: 15px;
-        }
-
-
-    </style>
+    <title>Профіль</title>
 </head>
+<style>
+/* Загальні стилі для body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Стилі для хедера */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* Зменшено верхній і нижній відступ, щоб хедер не був таким великим */
+    background-color: #2C3E50;
+    border-bottom: 1px solid #ddd;
+    width: 100%; /* Хедер займає всю ширину екрану */
+    box-sizing: border-box; /* Включає відступи і обводки в загальну ширину */
+    position: relative;
+    top: 0; /* Знято підйом хедера */
+    height: 60px; /* Фіксована висота хедера */
+}
+
+.header-left, .header-right {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 40px; /* Зменшено розмір лого */
+    height: auto;
+}
+
+.site-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    text-decoration: none;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.site-title:hover {
+    transform: scale(1.1);
+    color: #FD7E14;
+}
+
+.catalog-btn {
+    margin-left: 20px;
+    padding: 8px 12px;
+    background-color: #FD7E14;
+    font-size: 16px; /* Зменшено розмір шрифту */
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-family: "Montserrat", sans-serif;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.catalog-btn:hover {
+    transform: scale(1.1);
+    background-color: #e56a11;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.cart-icon img, .profile-icon img {
+    width: 35px; /* Зменшено розмір іконок */
+    height: auto;
+    margin-left: 20px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.cart-icon:hover img, .profile-icon:hover img {
+    transform: scale(1.2);
+    opacity: 0.7;
+}
+
+/* Стилі для контейнера та заголовків */
+.container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+.order-header {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.order-header h2 {
+    color: #2C3E50;
+}
+
+/* Стилі для таблиці замовлень */
+.order-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background-color: #2C3E50;
+    color: white;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #eaf1f8;
+}
+
+.order-table td {
+    border-bottom: 1px solid #ddd;
+}
+
+.order-table tr:last-child td {
+    border-bottom: none;
+}
+
+.order-table .total {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+    background-color: #ecf0f1;
+    border-top: 2px solid #ddd;
+}
+
+/* Стилі для повідомлень про замовлення */
+.no-orders-message {
+    text-align: center;
+    font-size: 18px;
+    color: #e74c3c;
+    margin-top: 20px;
+}
+
+/* Стилі для елементів замовлень */
+.order-item {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.order-item-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.order-item-price {
+    color: #2ecc71;
+    font-weight: 600;
+}
+
+.order-item-quantity {
+    color: #f39c12;
+}
+
+.order-item-total {
+    color: #e74c3c;
+    font-weight: 700;
+}
+
+
+</style>
 <body>
-
-    <h1>Особистий кабінет</h1>
-
-    <div class="user-details">
-        <h2>Ласкаво просимо, {{ username }}!</h2>
-        <div class="info">
-            <p><strong>Email:</strong> {{ email }}</p>
+    <header>
+        <div style="margin-left: 50px;" class="header-left">
+            <a href="/" class="logo">
+                <img src="/static/images/logo.png" alt="Logo">
+            </a>
+            <a href="/" class="site-title">Cyberyx</a>
+            <a href="{{ url_for('all_products') }}" class="catalog-btn">Товари</a>
         </div>
-        <div class="info">
-            <p><strong>Телефон:</strong> {{ phone }}</p>
+        <div class="header-right">
+            <a href="{{ url_for('reviews') }}" style="margin-right: 30px;" class="cart-icon">
+                <img src="/static/images/reviews.png" alt="Cart">
+            </a>
+            <a href="{{ url_for('cart') }}" style="margin-right: 30px;" class="cart-icon">
+                <img src="/static/images/icon5.png" alt="Cart">
+            </a>
+            <a href="{{ url_for('auth') }}" class="profile-icon">
+                <img src="/static/images/icon6.png" alt="Profile">
+            </a>
         </div>
-        <div class="info">
-            <p><strong>Дата реєстрації:</strong> {{ registration_date }}</p>
+    </header>
+
+
+    <div class="container">
+        <h1>Привіт, {{ username }}!</h1>
+
+        <div class="order-header">
+            <h2>Ваші замовлення</h2>
         </div>
 
-        <a href="/logout" class="button">Вийти</a>
+        {% if orders %}
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>№ Замовлення</th>
+                        <th>Дата</th>
+                        <th>Товари</th>
+                        <th>Загальна сума</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td rowspan="{{ order_items|length }}">{{ order['id'] }}</td>
+                            <td rowspan="{{ order_items|length }}">{{ order['date'] }}</td>
+                            <td class="order-item">
+                                <div class="order-item-name">{{ order_items[0]['product_name'] }}</div>
+                            </td>
+                            <td>{{ order_items[0]['total_price'] }} грн</td>
+                        </tr>
+                        {% for item in order_items[1:] %}
+                            <tr>
+                                <td class="order-item">
+                                    <div class="order-item-name">{{ item['product_name'] }}</div>
+                                </td>
+                                <td>{{ item['total_price'] }} грн</td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="3" class="total">Загальна сума:</td>
+                            <td>{{ order['total_price'] }} грн</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-orders-message">У вас ще немає замовлень.</p>
+        {% endif %}
     </div>
-
 </body>
 </html>

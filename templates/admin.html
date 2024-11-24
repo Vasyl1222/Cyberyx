@@ -146,6 +146,30 @@
             {% endfor %}
         </tbody>
     </table>
+    <h2>Відгуки</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ім'я</th>
+                <th>Email</th>
+                <th>Відгуки</th>
+                <th>Час написання</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for review in reviews %}
+                <tr>
+                    <td>{{ review.id }}</td>
+                    <td>{{ review.name }}</td>
+                    <td>{{ review.email }}</td>
+                    <td>{{ review.review }}</td> 
+                    <td>{{ review.created_at }}</td> 
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
 
 </body>
 </html>

@@ -407,6 +407,96 @@
 .dropdown:hover .dropdown-content {
     display: block;
 }
+.filter-sort-container {
+    display: flex;
+    justify-content: flex-start;  /* вирівнювання зліва */
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-sort-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+    margin-left: 50px;
+}
+
+.search-form input {
+    padding: 8px;
+    border: 1px solid #FD7E14;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.search-form button {
+    padding: 8px 15px;
+    background-color: #2C3E50;
+    color: #FD7E14;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.search-form button:hover {
+    background-color: #34495E;
+    transform: scale(1.1);
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    background-color: #2C3E50;
+    color: #FD7E14;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-btn:hover {
+    background-color: #34495E;
+    transform: scale(1.1);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #2C3E50;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    width: 200px;
+}
+
+.dropdown-content a {
+    color: #FD7E14;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #34495E;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
 
     </style>
 </head>
@@ -420,6 +510,9 @@
             <a href="{{ url_for('all_products') }}" class="catalog-btn">Товари</a>
         </div>
         <div class="header-right">
+            <a href="{{ url_for('reviews') }}" style="margin-right: 30px;" class="cart-icon">
+                <img src="/static/images/reviews.png" alt="Cart">
+            </a>
             <a href="{{ url_for('cart') }}" style="margin-right: 30px;" class="cart-icon">
                 <img src="/static/images/icon5.png" alt="Cart">
             </a>
@@ -430,25 +523,34 @@
     </header>
 
 
-
-    <div class="dropdown">
-        <button class="dropdown-btn">Фільтрувати за категорією</button>
-        <div class="dropdown-content">
-            <a href="{{ url_for('all_products', category='popular') }}">Популярні</a>
-            <a href="{{ url_for('all_products', category='pc') }}">Комп'ютери</a>
-            <a href="{{ url_for('all_products', category='laptops') }}">Ноутбуки</a>
-            <a href="{{ url_for('all_products', category='phones') }}">Телефони</a>
-            <a href="{{ url_for('all_products') }}">Показати всі</a>
+    <div class="filter-sort-container">    
+        <!-- Фільтрація -->
+        <div class="dropdown">
+            <button class="dropdown-btn">Фільтрувати за категорією</button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('all_products', category='popular') }}">Популярні</a>
+                <a href="{{ url_for('all_products', category='pc') }}">Комп'ютери</a>
+                <a href="{{ url_for('all_products', category='laptops') }}">Ноутбуки</a>
+                <a href="{{ url_for('all_products', category='phones') }}">Телефони</a>
+                <a href="{{ url_for('all_products') }}">Показати всі</a>
+            </div>
         </div>
-    </div>
-    <div class="dropdown">
-        <button class="dropdown-btn">Сортувати</button>
-        <div class="dropdown-content">
-            <a href="{{ url_for('all_products', category=request.args.get('category'), sort_by='price', sort_order='asc') }}">Ціна (від дешевших до дорожчих)</a>
-            <a href="{{ url_for('all_products', category=request.args.get('category'), sort_by='price', sort_order='desc') }}">Ціна (від дорожчих до дешевших)</a>
-            <a href="{{ url_for('all_products', category=request.args.get('category'), sort_by='name', sort_order='asc') }}">Алфавіт (А-Я)</a>
-            <a href="{{ url_for('all_products', category=request.args.get('category'), sort_by='name', sort_order='desc') }}">Алфавіт (Я-А)</a>
+    
+        <!-- Сортування -->
+        <div class="dropdown">
+            <button class="dropdown-btn">Сортувати</button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('all_products', category=request.args.get('category'), sort_by='price', sort_order='asc') }}">Ціна (від дешевших до дорожчих)</a>
+                <a href="{{ url_for('all_products', category=request.args.get('category'), sort_by='price', sort_order='desc') }}">Ціна (від дорожчих до дешевших)</a>
+                <a href="{{ url_for('all_products', category=request.args.get('category'), sort_by='name', sort_order='asc') }}">Алфавіт (А-Я)</a>
+                <a href="{{ url_for('all_products', category=request.args.get('category'), sort_by='name', sort_order='desc') }}">Алфавіт (Я-А)</a>
+            </div>
         </div>
+        <!-- Пошук -->
+        <form method="get" action="/all_products" class="search-form">
+            <input type="text" name="search" value="{{ search_query }}" placeholder="Пошук...">
+            <button type="submit">Search</button>
+        </form>
     </div>
     
     
